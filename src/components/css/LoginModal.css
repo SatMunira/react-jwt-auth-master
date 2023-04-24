@@ -1,0 +1,88 @@
+.my-modal .modal-content {
+  border-radius: 0;
+}
+.logo-image {
+  width: 85%;
+  height: 85%;
+}
+.my-text {
+  font-size: 26px;
+  line-height: 32px;
+  letter-spacing: -0.01em;
+  font-family: ll-unica77, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.form-control {
+  border: none;
+  height: 50px;
+  border-bottom: 1px solid rgb(150, 150, 150);
+  border-radius: 0;
+  transition: color 0.001ms ease;
+}
+
+.register-text,
+.register-link{
+  color: #868686;
+  font-size: small;
+  
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #ced4da;
+}
+.form-control:hover {
+  border-bottom: 1px solid rgb(53, 53, 53);
+}
+.form-control:hover::placeholder {
+  color: rgb(53, 53, 53);
+}
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  font-size: 18px;
+  color: #999;
+  line-height: 32px;
+  letter-spacing: -0.01em;
+  font-family: ll-unica77, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.forgot-password,
+.forgot-password:hover{
+  float: right;
+  color:#868686;
+
+}
+.login-button{
+  border-radius: 0;
+  width: 100%;
+}
+.google-button,
+.google-button:hover{
+  border-color: black !important; 
+  border-radius: 0;
+  width: 100%;
+  background-color: white   !important;
+  color:black !important
+}
+.eye-button{
+  background-color: white;
+  border:none;
+  border-bottom: 1px solid rgb(150, 150, 150);
+  border-radius: 0;
+}
+.eye-icon{
+  width:140%;
+  color: #868686;
+}
+.alert-message{
+  border-radius: 0;
+  background-color: rgb(240, 220, 216);
+  font-size: 17px;
+}
+.alert-getEmail{
+  border-radius: 0;
+  background-color: rgb(185, 216, 191);
+  font-size: 17px;
+}
+.get-Email{
+  width: 50%;
+}
+

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -16,65 +16,62 @@ import BoardAdmin from "./components/board-admin.component";
 // import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
 import OAuth2RedirectHandler from "./user/oauth2/OAuth2RedirectHandler";
-import SocialLogin from "./components/SocialLogin";
-import GetEmailComponent from "./components/GetEmail.component";
 import ResetPasswordForm from "./components/reset-password-form";
-import ResetPassStatus from "./components/reset-pass-status";
-import ResetPasswordState from "./components/reset-pass-status";
 
+function App() {
+  const [currentUser, setCurrentUser] = useState(undefined);
+  const [showModeratorBoard, setShowModeratorBoard] = useState(false);
+  const [showAdminBoard, setShowAdminBoard] = useState(false);
+  const [childRegisterShow, setChildRegisterShow] = useState(false);
+  const [loginShow, setLoginShow] = useState(false);
 
+  const handleModalOpen = () => {
+    setLoginShow(true);
+  };
+  const handleRegisterOpen = () => {
+    setChildRegisterShow(true);
+  };
+  const handleRegisterClose = () => {
+    setChildRegisterShow(false);
+  };
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.logOut = this.logOut.bind(this);
-
-    this.state = {
-      showModeratorBoard: false,
-      showAdminBoard: false,
-      currentUser: undefined,
-    };
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     const user = AuthService.getCurrentUser();
 
     if (user) {
-      this.setState({
-        currentUser: user,
-        showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
-        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-      });
+      setCurrentUser(user);
+      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
-    
+
     EventBus.on("logout", () => {
-      this.logOut();
+      logOut();
     });
-  }
 
-  componentWillUnmount() {
-    EventBus.remove("logout");
-  }
+    return () => {
+      EventBus.remove("logout");
+    };
+  }, []);
+  const handleModalClose = () => {
+    setLoginShow(false);
+  };
 
-  logOut() {
+  function logOut() {
     AuthService.logout();
-    this.setState({
-      showModeratorBoard: false,
-      showAdminBoard: false,
-      currentUser: undefined,
-    });
+    setShowModeratorBoard(false);
+    setShowAdminBoard(false);
+    setCurrentUser(undefined);
+    window.location.reload();
   }
 
-  render() {
-    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
-
-    return (
-      <div>
-        <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <Link to={"/"} className="navbar-brand">
-            bezKoder
-          </Link>
+  return (
+    <div>
+      <nav className="navbar navbar-expand navbar-dark bg-dark">
+        <div className="container-fluid">
           <div className="navbar-nav mr-auto">
+            <Link to={"/"} className="navbar-brand">
+              bezKoder
+            </Link>
             <li className="nav-item">
               <Link to={"/home"} className="nav-link">
                 Home
@@ -114,51 +111,56 @@ class App extends Component {
                 </Link>
               </li>
               <li className="nav-item">
-                <a href="/login" className="nav-link" onClick={this.logOut}>
+                <a className="nav-link" onClick={logOut}>
                   LogOut
                 </a>
               </li>
             </div>
           ) : (
             <div className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link to={"/login"} className="nav-link">
+              <li className="nav-item px-4">
+                <Link className="sign-up-nav " onClick={handleModalOpen}>
                   Login
                 </Link>
-                
+                <Login
+                  loginShow={loginShow}
+                  onClose={handleModalClose}
+                  registerShow={childRegisterShow}
+                  setRegisterState={setChildRegisterShow}
+                />
               </li>
-              <SocialLogin />
-
-              <li className="nav-item">
-                <Link to={"/register"} className="nav-link">
-                  Sign Up
+              <li className="nav-item py-auto my-auto">
+                <Link className="sign-up-nav " onClick={handleRegisterOpen}>
+                  Sign up
                 </Link>
+                <Register
+                  registerShow={childRegisterShow}
+                  onClose={handleRegisterClose}
+                  loginShowModal={loginShow}
+                  setLoginState={setLoginShow}
+                />
               </li>
             </div>
           )}
-        </nav>
-
-        <div className="container mt-3">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/user" element={<BoardUser />} />
-            <Route path="/mod" element={<BoardModerator />} />
-            <Route path="/admin" element={<BoardAdmin />} />
-            <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
-            <Route path="/reset_password" element={<GetEmailComponent/>} />
-            <Route path="/reset_password_form" element={<ResetPasswordForm />} />
-            <Route path="/ResetPassStatus" element={<ResetPasswordState />} />
-          </Routes>
         </div>
+      </nav>
+      <div className="container mt-3">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/user" element={<BoardUser />} />
+          <Route path="/mod" element={<BoardModerator />} />
+          <Route path="/admin" element={<BoardAdmin />} />
+          <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
 
-        {/* <AuthVerify logOut={this.logOut}/> */}
+          <Route path="/reset_password_form" element={<ResetPasswordForm />} />
+        </Routes>
       </div>
-    );
-  }
+
+      {/* <AuthVerify logOut={this.logOut}/> */}
+    </div>
+  );
 }
 
-export default  App;
+export default App;

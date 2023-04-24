@@ -7,6 +7,14 @@ label {
   max-width: 350px !important;
   padding: 40px 40px;
 }
+.modal-header {
+  border-bottom: none;
+}
+.sign-up-nav,
+.sign-up-nav:hover{
+  text-decoration: none;
+  color: rgb(163, 163, 163);
+}
 
 .card {
   background-color: #f7f7f7;

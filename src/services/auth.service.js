@@ -22,6 +22,7 @@ class AuthService {
   }
 
   register(username, email, password) {
+    console.log('aksdn')
     return axios.post(API_URL + "signup", {
       username,
       email,

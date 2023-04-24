@@ -5,10 +5,10 @@ const SocialLogin = () => {
   return (
     <div>
       <a
-        className="btn btn-block text-white social-btn google"
+        className=" google"
         href={GOOGLE_AUTH_URL}
       >
-        Log in with Google
+      Log in with Google
       </a>
     </div>
   );

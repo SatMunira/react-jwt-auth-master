@@ -8,7 +8,7 @@ const OAuth2RedirectHandler = () => {
   const navigate = useNavigate();
   const jwt = searchParams.get("token").toString();
   console.log(jwt);
-  const response = axios
+   axios
     .post(
       API_URL,
       { jwt: jwt },

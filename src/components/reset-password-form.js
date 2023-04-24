@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 import Form from "react-validation/build/form";
+import "./css/LoginModal.css";
+import Input from "react-validation/build/input";
 
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import ResetPasswordState from "./reset-pass-status";
 
@@ -11,7 +13,6 @@ const API_URL = "http://localhost:8084/forgot_password";
 const ResetPasswordForm = () => {
   const [token, setToken] = useState("");
   const [message, setMessage] = useState("");
-  const navigate = useNavigate();
 
   const [input, setInput] = useState({
     password: "",
@@ -45,10 +46,9 @@ const ResetPasswordForm = () => {
       switch (name) {
         case "password":
           if (!value) {
-            stateObj[name] = "Please enter Password.";
+            stateObj[name] = "Please enter Password";
           } else if (input.confirmPassword && value !== input.confirmPassword) {
-            stateObj["confirmPassword"] =
-              "Password and Confirm Password does not match.";
+            stateObj["confirmPassword"] = "Passwords do not match";
           } else {
             stateObj["confirmPassword"] = input.confirmPassword
               ? ""
@@ -58,9 +58,9 @@ const ResetPasswordForm = () => {
 
         case "confirmPassword":
           if (!value) {
-            stateObj[name] = "Please enter Confirm Password.";
+            stateObj[name] = "Please confirm the password";
           } else if (input.password && value !== input.password) {
-            stateObj[name] = "Password and Confirm Password does not match.";
+            stateObj[name] = "Passwords do not match";
           }
           break;
 
@@ -73,7 +73,7 @@ const ResetPasswordForm = () => {
   };
 
   function fetchData() {
-    const response = axios
+    axios
       .post(
         API_URL + "/reset_password",
         { token: token, password: input.password },
@@ -83,65 +83,60 @@ const ResetPasswordForm = () => {
       )
       .then((response) => {
         setMessage(response.data);
-        console.log(',dsf: '+message);
-
-        navigate('/ResetPassStatus', {state: {message:response.data}})
       });
-  }
-  if(message){
-    console.log(',dsf: '+message);
-    
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     fetchData();
-  
-
   };
 
   return (
     <div>
-      <div className="col-md-12">
-        <div className="card card-container">
-          <Form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <input
-                type="password"
-                name="password"
-                placeholder="Enter Password"
-                value={input.password}
-                onChange={onInputChange}
-                onBlur={validateInput}
-              ></input>
-              {error.password && <span className="err">{error.password}</span>}
+      <div className="col-md-4 mx-auto ">
+        <div className="my-text">Enter the new password</div>
+        <Form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <Input
+              type="password"
+              name="password"
+              className="form-control my-2"
+              placeholder="Enter Password"
+              value={input.password}
+              onChange={onInputChange}
+              onBlur={validateInput}
+            ></Input>
+            {error.password && (
+              <span className="err text-danger">{error.password}</span>
+            )}
 
-              <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Enter Confirm Password"
-                value={input.confirmPassword}
-                onChange={onInputChange}
-                onBlur={validateInput}
-              ></input>
-              {error.confirmPassword && (
-                <span className="err">{error.confirmPassword}</span>
-              )}
-              <div className="alert alert-green" role="alert">
-                {message}
-              </div>
+            <Input
+              type="password"
+              name="confirmPassword"
+              className="form-control my-4"
+              placeholder="Enter Confirm Password"
+              value={input.confirmPassword}
+              onChange={onInputChange}
+              onBlur={validateInput}
+            ></Input>
+            {error.confirmPassword && (
+              <span className="err text-danger">{error.confirmPassword}</span>
+            )}
 
-              <p>
-                <button
-                  onClick={handleSubmit}
-                >
-                  Reset
-                </button>
-              </p>
-            </div>
-          </Form>
-        </div>
+            <p>
+              <button
+                className="btn btn-dark btn-block my-4 login-button"
+                onClick={handleSubmit}
+              >
+                Reset
+              </button>
+            </p>
+          </div>
+        </Form>
       </div>
+      {message && (
+        <ResetPasswordState message={message} setMessage={setMessage} />
+      )}
     </div>
   );
 };
