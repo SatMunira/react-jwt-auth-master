@@ -1,0 +1,171 @@
+.card-columns-all {
+  column-count: 5;
+  column-gap: 1.2rem;
+  margin-left: 3px;
+  width: 950px;
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+}
+.card-style {
+  margin: 0;
+  padding: 0;
+  border: none; /* Убираем границу */
+  box-shadow: none; /* Убираем тень */
+  background-color: transparent;
+}
+.card-image {
+  width: auto;
+  height: auto;
+  max-width: 160px;
+  max-height: 250px;
+  border-radius: 3%;
+}
+.overflow-text {
+  width: 162px; /* задаем ширину блока */
+  white-space: nowrap; /* запрещаем перенос текста на новую строку */
+  overflow: hidden; /* скрываем текст, который не помещается в блоке */
+  text-overflow: ellipsis; /* добавляем троеточие в конце обрезанного текста */
+  font-weight: 70;
+  font-size: 17px;
+}
+.card-body {
+  padding: 0;
+  padding-top: 5%;
+  padding-left: 2%;
+}
+.allBooks {
+  display: flex;
+}
+.three-blocks {
+  width: 420px;
+  border: 1px solid rgb(185, 185, 185);
+  border-radius: 1%;
+  height: auto;
+  max-height: 415px;
+  z-index: 300;
+  animation: fade .5s ease;
+  position: relative;
+  overflow: hidden;
+
+}
+.active{
+  transform: none !important;
+}
+.block-hidden{
+  position: absolute;
+  z-index: 60;
+  width: 100%;
+  
+  height: 360px;
+  -webkit-transform: translateX(100%);
+  -webkit-transition: .3s ease;
+  transform: translateX(100%);
+  transition: .3s ease;
+  background-color: rgb(255, 255, 255);
+}
+.genre-filter {
+  display: flex;
+  padding: 1%;
+  border-radius: 3%;
+  justify-content: space-between;
+}
+.genre-filter:hover {
+  background-color: rgb(250, 250, 250);
+}
+.genre-filter .left {
+  flex-grow: 1;
+  text-align: left;
+  font-weight: 600;
+}
+.genre-filter .right {
+  flex-grow: 1;
+  text-align: right;
+  padding-top: 1%;
+  font-size: small;
+  color: rgb(83, 83, 83);
+  width: 162px; /* задаем ширину блока */
+  white-space: nowrap; /* запрещаем перенос текста на новую строку */
+  overflow: hidden; /* скрываем текст, который не помещается в блоке */
+  text-overflow: ellipsis; /* добавляем троеточие в конце обрезанного текста */
+}
+.select-between {
+  padding: 1%;
+}
+.select-between .text {
+  font-weight: 600;
+}
+.two-inputs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-left,
+.input-right,
+.input-left:focus-visible,
+.input-right:focus-visible {
+  padding: 1%;
+  border-color: #a7a7a762 !important;
+  border-width: 1px !important;
+  outline: none;
+  border-radius: 4px;
+  width: 81%;
+}
+.input-left::placeholder,
+.input-right::placeholder {
+  font-size: small;
+}
+.input-right {
+  margin-left: 15%;
+}
+.two-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.btn-left,
+.btn-right {
+  width: 48%;
+  border: none;
+  font-weight: 500;
+}
+.btn-left{
+  background-color: rgb(216, 216, 216);
+}
+.text-rest{
+  cursor: pointer;
+}
+.choose-button{
+  width: 92%;
+  bottom: 2%;
+  position: relative;
+}
+.choose-button:hover{
+  background-color: rgb(202, 202, 202);
+}
+.search-genre-input,
+.search-genre-input:focus-visible{
+  padding: 1%;
+  border-color: #a7a7a762 !important;
+  border-width: 1px !important;
+  outline: none;
+  border-radius: 4px;
+}
+.search-genre-input::placeholder{
+  font-size: 16px;
+}
+.genres-checkBox{
+  display: flex;
+}
+input[type='checkbox'] {
+  accent-color: rgb(46, 46, 46);
+}
+.tagg-block{
+  margin-bottom: 3%;
+  height: auto;
+  max-height: 250px;
+  overflow: auto;
+}
+
+
+

@@ -213,7 +213,7 @@ const Register = ({ registerShow, onClose, loginShow, setLoginState }) => {
                     }
                     role="alert"
                   >
-                    Invalid data, please try again
+                    {message}
                   </div>
                 </div>
                 

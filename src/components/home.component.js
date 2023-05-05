@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
 import UserService from "../services/user.service";
+import NewBookList from "./NewBookList";
+import "./css/Home.css"
 
 export default class Home extends Component {
   constructor(props) {
@@ -31,9 +33,9 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container-home">
         <header className="jumbotron">
-          <h3>{this.state.content}</h3>
+          <NewBookList/>
         </header>
       </div>
     );

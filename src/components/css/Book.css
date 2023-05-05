@@ -1,0 +1,42 @@
+.card-columns {
+  column-count: 7;
+  column-gap: 1.2rem;
+  margin-left: 3px;
+  display: flex;
+  flex-wrap: wrap;
+
+  height: auto;
+}
+.card-style {
+  margin: 0;
+  padding: 0;
+  border: none; /* Убираем границу */
+  box-shadow: none; /* Убираем тень */
+  background-color: transparent;
+}
+.card-image {
+  width: auto;
+  height: auto;
+  max-width: 160px;
+  max-height: 250px;
+  border-radius: 3%;
+}
+.overflow-text {
+  width: 162px; /* задаем ширину блока */
+  white-space: nowrap; /* запрещаем перенос текста на новую строку */
+  overflow: hidden; /* скрываем текст, который не помещается в блоке */
+  text-overflow: ellipsis; /* добавляем троеточие в конце обрезанного текста */
+  font-weight: 70;
+  font-size: 17px;
+}
+.card-body {
+  padding: 0;
+  padding-top: 5%;
+  padding-left: 2%;
+}
+.latest-block {
+  width: auto;
+  max-width: 1450px;
+  height: auto;
+  max-height: 350px;
+}

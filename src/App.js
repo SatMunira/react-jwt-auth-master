@@ -17,6 +17,9 @@ import BoardAdmin from "./components/board-admin.component";
 import EventBus from "./common/EventBus";
 import OAuth2RedirectHandler from "./user/oauth2/OAuth2RedirectHandler";
 import ResetPasswordForm from "./components/reset-password-form";
+import NewBookForm from "./components/NewBookForm";
+
+import Books from "./components/Books"
 
 function App() {
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -101,6 +104,11 @@ function App() {
                 </Link>
               </li>
             )}
+            <li className="nav-item">
+                <Link to={"/books"} className="nav-link">
+                  Books
+                </Link>
+              </li>
           </div>
 
           {currentUser ? (
@@ -144,7 +152,7 @@ function App() {
           )}
         </div>
       </nav>
-      <div className="container mt-3">
+      <div className="container-home mt-3">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
@@ -153,8 +161,9 @@ function App() {
           <Route path="/mod" element={<BoardModerator />} />
           <Route path="/admin" element={<BoardAdmin />} />
           <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
-
+          <Route path="/books/createBook" element={<NewBookForm/>}/>
           <Route path="/reset_password_form" element={<ResetPasswordForm />} />
+          <Route path="/books" element={<Books/>}/>
         </Routes>
       </div>
 

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
+import { Link } from "react-router-dom";
 
 export default class BoardModerator extends Component {
   constructor(props) {
@@ -41,6 +42,7 @@ export default class BoardModerator extends Component {
       <div className="container">
         <header className="jumbotron">
           <h3>{this.state.content}</h3>
+          <Link to={"/books/createBook"}>Create new book</Link>
         </header>
       </div>
     );
