@@ -15,35 +15,32 @@ const NewBookForm = () => {
   const [genres, setGenres] = useState([]);
   const [publisherList, setPublisherList] = useState([]);
   const [publishers, setPublishers] = useState([]);
+  const [tagsList, setTagsList] = useState([]);
+  const [tags, setTags] = useState([]);
   const [image, setImage] = useState(null);
-  const [imageTitle, setImageTitle] = useState("");
   const [imageBack, setBackImage] = useState(null);
-  const [imageBackTitle, setBackImageTitle] = useState(null);
   const [title, setTitle] = useState("");
-  const [alternativeTitle, setAlternativeTitle] = useState("");
+  const [yearOfWriting, setYearOfWriting] = useState('');
   const [dateOfManufacture, setDateOfManufacture] = useState("");
   const [description, setDescription] = useState("");
+  const [quantityOfPages, setQuantityOfPages] = useState('');
 
   const API_URL = "http://localhost:8084/";
 
   const edition = {
-    title: title,
-    alternativeTitle: alternativeTitle,
-    dateOfManufacture: dateOfManufacture,
+    manufactureDate: dateOfManufacture,
     description: description,
+    publishers: publishers,
   };
 
   const book = {
-    publishers: publishers,
+    title: title,
     authors: authors,
+    yearOfWriting: yearOfWriting,
     genres: genres,
-    
+    tags: tags,
+    quantityOfPages: quantityOfPages
   };
-
-  const formData = new FormData();
-  formData.append("imageQwe", image);
-  formData.append("BackQwe", imageBack);
-  formData.append("book", book);
 
   const createBookHandler = async (e) => {
     e.preventDefault();
@@ -55,7 +52,7 @@ const NewBookForm = () => {
           imageQwe: image,
           BackQwe: imageBack,
           book: JSON.stringify(book),
-          editionQwe: JSON.stringify(edition)
+          editionQwe: JSON.stringify(edition),
         },
         {
           headers: authHeader(),
@@ -110,32 +107,34 @@ const NewBookForm = () => {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(API_URL + "tags/all", {
+          headers: authHeader(),
+        });
+        setTagsList(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
   const handleImageChange = (newImage) => {
     setImage(newImage);
   };
-  const handleImageTitleChange = (newImageTitle) => {
-    setImageTitle(newImageTitle);
-  };
+
   const handleBackImageChange = (newBackImage) => {
     setBackImage(newBackImage);
-  };
-  const handleBackImageTitleChange = (newBackImageTitle) => {
-    setBackImageTitle(newBackImageTitle);
   };
 
   return (
     <div className=" container my-4 bookForm">
       <Form>
         Main image of book
-        <ImageUploader
-          onImageChange={handleImageChange}
-          onImageTitleChange={handleImageTitleChange}
-        />
+        <ImageUploader onImageChange={handleImageChange} />
         Background image
-        <BackImageUploader
-          onBackImageChange={handleBackImageChange}
-          onImageBackTitleChange={handleBackImageTitleChange}
-        />
+        <BackImageUploader onBackImageChange={handleBackImageChange} />
         Original name
         <Input
           type="text"
@@ -143,18 +142,18 @@ const NewBookForm = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        Alternative name
+        Year of writing
         <Input
           type="text"
           className="input-form my-2"
-          value={alternativeTitle}
-          onChange={(e) => setAlternativeTitle(e.target.value)}
+          value={yearOfWriting}
+          onChange={(e) => setYearOfWriting(e.target.value)}
         />
         <div className="inline-group">
           <div>
             Release date
             <Input
-              type="date"
+              type="number"
               className="input-form-small my-2 "
               value={dateOfManufacture}
               onChange={(e) => setDateOfManufacture(e.target.value)}
@@ -172,39 +171,68 @@ const NewBookForm = () => {
           </div>
         </div>
         <div>
-          Authors
-          <Dropdown
-            isSearchable
-            isMulti
-            placeHolder="Select..."
-            options={authorsList}
-            onChange={(id) => setAuthors(id)}
-          />
-          Publisher
-          <Dropdown
-            isSearchable
-            isMulti
-            placeHolder="Select..."
-            options={publisherList}
-            onChange={(id) => setPublishers(id)}
-          />
-          <label htmlFor="text-input">Description:</label>
-          <textarea
-            id="text-input"
-            name="text-input"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows="5"
-            className="input-form"
-            cols="50"
-          ></textarea>
-          <button
-            type="submit"
-            onClick={createBookHandler}
-            className="btn btn-dark my-1 btn-block my-3 create-book"
-          >
-            Create book
-          </button>
+          <div className="inline-group">
+            <div>
+              Authors
+              <Dropdown
+                isSearchable
+                isMulti
+                placeHolder="Select..."
+                options={authorsList}
+                onChange={(id) => setAuthors(id)}
+              />
+            </div>
+            <div className="mx-4">
+              Tags
+              <Dropdown
+                isSearchable
+                isMulti
+                placeHolder="Select..."
+                options={tagsList}
+                onChange={(id) => setTags(id)}
+              />
+            </div>
+          </div>
+          <div>
+            <div className="inline-group">
+              <div>
+                Publisher
+                <Dropdown
+                  isSearchable
+                  isMulti
+                  placeHolder="Select..."
+                  options={publisherList}
+                  onChange={(id) => setPublishers(id)}
+                />
+              </div>
+              <div className="mx-4">
+                Quantity of pages
+                <Input
+                  type="number"
+                  className="input-form-small my-2 "
+                  value={quantityOfPages}
+                  onChange={(e) => setQuantityOfPages(e.target.value)}
+                />
+              </div>
+            </div>
+            <label htmlFor="text-input">Description:</label>
+            <textarea
+              id="text-input"
+              name="text-input"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows="5"
+              className="input-form"
+              cols="50"
+            ></textarea>
+            <button
+              type="submit"
+              onClick={createBookHandler}
+              className="btn btn-dark my-1 btn-block my-3 create-book"
+            >
+              Create book
+            </button>
+          </div>
         </div>
       </Form>
     </div>

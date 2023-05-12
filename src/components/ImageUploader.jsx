@@ -12,7 +12,7 @@ const ImageUploader = (props) => {
     //you can carry out any file validations here...
     setImage(file);
     props.onImageChange(file);
-    props.onImageTitleChange(file.name);
+
     setPreviewUrl(URL.createObjectURL(file));
   };
 
@@ -20,11 +20,11 @@ const ImageUploader = (props) => {
     event.preventDefault();
   };
 
-  const handleDeleteImage = (e) =>{
+  const handleDeleteImage = (e) => {
     e.preventDefault();
     setImage(null);
     setPreviewUrl("");
-  }
+  };
 
   const handleOnDrop = (event) => {
     //prevent the browser from opening the image
@@ -58,8 +58,9 @@ const ImageUploader = (props) => {
         {previewUrl && (
           <div className="image" style={{ position: "relative" }}>
             <img src={previewUrl} alt="image" className="image" />
-            <button onClick={handleDeleteImage} className="delete-image"
-            ><FontAwesomeIcon icon={faTrash} className="trash-icon" /></button>
+            <button onClick={handleDeleteImage} className="delete-image">
+              <FontAwesomeIcon icon={faTrash} className="trash-icon" />
+            </button>
           </div>
         )}
       </div>

@@ -1,0 +1,12 @@
+.flex-tab{
+    display:flex
+}
+.user-image-comment{
+    width: 4%;
+    height: 4%;
+    border-radius: 3%;
+}
+.reply-button{
+    padding: 0;
+    color: rgb(68, 68, 68);
+}

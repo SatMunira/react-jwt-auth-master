@@ -10,28 +10,34 @@ import authHeader from "../services/auth-header";
 
 const API_URL = "http://localhost:8084/";
 
-const TagList = ({ setActiveTag, setList }) => {
+const TagList = ({ setActiveTag, setListTags }) => {
   const [tags, setTags] = useState([]);
   const [checkedTags, setCheckedTags] = useState([]);
   const [searchInput, setSearchInput] = useState("");
 
   const handleCheckboxChange = (event) => {
-    const genreId = event.target.value;
+    const tagId = event.target.value;
     const isChecked = event.target.checked;
     setCheckedTags((prevState) => ({
       ...prevState,
-      [genreId]: isChecked,
+      [tagId]: isChecked,
     }));
   };
+  const filteredGenres = tags.filter((genre) =>
+    genre.name.toLowerCase().includes(searchInput.toLowerCase())
+  );
+ 
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const checkedGenreIds = Object.entries(checkedTags)
-      .filter(([genreId, isChecked]) => isChecked)
-      .map(([genreId, isChecked]) => genreId);
-    console.log("Checked genre IDs:", checkedGenreIds);
-    setList(checkedGenreIds);
+    const checkedTagIds = Object.entries(checkedTags)
+      .filter(([tagId, isChecked]) => isChecked)
+      .map(([tagId, isChecked]) => tagId);
+    console.log("Checked genre IDs:", checkedTagIds);
+   
+    setListTags(checkedTagIds);
   };
+  
 
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value);
@@ -50,10 +56,8 @@ const TagList = ({ setActiveTag, setList }) => {
     };
     fetchBooks();
   }, []);
+  
 
-  const filteredGenres = tags.filter((tag) =>
-    tag.name.toLowerCase().includes(searchInput.toLowerCase())
-  );
 
   return (
     <div className="tag-block">
@@ -81,15 +85,15 @@ const TagList = ({ setActiveTag, setList }) => {
           />
         </div>
         <div className="tagg-block">
-        {filteredGenres.map((genre) => (
-          <div key={genre.name} className="genres-checkBox">
+        {filteredGenres.map((t) => (
+          <div key={t.name} className="genres-checkBox">
             <input
               type="checkbox"
-              value={genre.name}
-              checked={checkedTags[genre.name] || false}
+              value={t.name}
+              checked={checkedTags[t.name] || false}
               onChange={handleCheckboxChange}
             />
-            <div className="px-2">{genre.name}</div>
+            <div className="px-2">{t.name}</div>
           </div>
         ))}
         </div>

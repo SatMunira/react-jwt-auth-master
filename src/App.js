@@ -20,6 +20,7 @@ import ResetPasswordForm from "./components/reset-password-form";
 import NewBookForm from "./components/NewBookForm";
 
 import Books from "./components/Books"
+import BookInfo from "./components/BookInfo";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -164,6 +165,7 @@ function App() {
           <Route path="/books/createBook" element={<NewBookForm/>}/>
           <Route path="/reset_password_form" element={<ResetPasswordForm />} />
           <Route path="/books" element={<Books/>}/>
+          <Route path="/book/:id" element={<BookInfo/>}/>
         </Routes>
       </div>
 

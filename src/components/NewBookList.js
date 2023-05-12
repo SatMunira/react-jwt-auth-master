@@ -6,28 +6,30 @@ import "./css/Book.css";
 const API_URL = "http://localhost:8084/";
 
 const NewBookList = () => {
-  const [editions, setEditions] = useState([]);
+  const [books, setBooks] = useState([]);
 
   useEffect(() => {
     async function fetchBooks() {
       const response = await axios.get(API_URL + "books/latest");
-      setEditions(response.data);
+      setBooks(response.data);
+      
     }
     fetchBooks();
-  });
+  },[]);
+  
   return (
     <div>
       <h4>Latest Books</h4> <div className="latest-block">
       <div className="card-columns">
-        {editions.map((edition) => (
-          <Card key={edition.id} className="card-style my-3" >
+        {books.map((book) => (
+          <Card key={book.id} className="card-style my-3" >
             <Card.Img
               className="card-image"
               variant="top"
-              src={`http://localhost:8084${edition.imageUrl}`}
+              src={`http://localhost:8084${book.editions[0].imageUrl}`}
             />
             <Card.Body className="card-body">
-              <Card.Title className="overflow-text">{edition.title}</Card.Title>
+              <Card.Title className="overflow-text">{book.title}</Card.Title>
             </Card.Body>
           </Card>
         ))}

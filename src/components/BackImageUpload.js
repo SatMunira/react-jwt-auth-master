@@ -25,8 +25,7 @@ const BackImageUploader = (props) => {
     if (imageWidth >= 550) {
       setImage(file);
       props.onBackImageChange(file);
-      props.onImageBackTitleChange(file.name)
-      
+
       setPreviewUrl(URL.createObjectURL(file));
     } else {
       setShowAlert(true);
@@ -85,9 +84,7 @@ const BackImageUploader = (props) => {
         )}
 
         {showAlert && (
-          <div
-            className="alert-image"
-          >
+          <div className="alert-image">
             The max width should be not less than 1450px
           </div>
         )}

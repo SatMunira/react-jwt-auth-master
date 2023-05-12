@@ -7,6 +7,7 @@ import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
+import { Link } from "react-router-dom";
 
 import GenreList from "./GenreList";
 import TagList from "./TagList";
@@ -14,18 +15,92 @@ import TagList from "./TagList";
 const API_URL = "http://localhost:8084/";
 
 const Books = () => {
-  const [editions, setEditions] = useState([]);
-  const [startPage, setStartPage] = useState("");
+  const [books, setBooks] = useState([]);
   const [isActiveGenre, setIsActiveGenre] = useState(false);
   const [isActiveTag, setIsActiveTag] = useState(false);
   const [checkedGenres, setCheckedGenres] = useState([]);
-  const [checkedTags, setCheckedTags]  = useState([]);
-  const commaSeparetedList = checkedGenres.join(", ");
-  const commaSeparetedTags  =checkedTags.join(", ");
+  const [checkedTags, setCheckedTags] = useState([]);
 
- function filterBooks(editions, checkedGenres, checkedTags){
-    
- }
+  const [yearStart, setYearStart] = useState("");
+  const [yearEnd, setYearEnd] = useState("");
+
+  const [pageStart, setPageStart] = useState("");
+  const [pageEnd, setPageEnd] = useState("");
+
+  const [searchInput, setSearchInput] = useState("");
+
+  const commaSeparetedList = checkedGenres.join(", ");
+  const commaSeparetedTags = checkedTags.join(", ");
+
+  const handleReset = (e) => {
+    e.preventDefault();
+    setCheckedGenres([]);
+    setCheckedTags([]);
+    setYearStart("");
+    setYearEnd("");
+    setPageStart("");
+    setPageEnd("");
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchInput(event.target.value);
+  };
+
+  function filterBooks(
+    books,
+    checkedGenres,
+    checkedTags,
+    yearStart,
+    yearEnd,
+    pageStart,
+    pageEnd
+  ) {
+    return books.filter((book) => {
+      const isEqualTitle =
+        searchInput.length === 0 ||
+        book.title.toLowerCase().includes(searchInput.toLowerCase());
+
+      const isEqualPages =
+        pageStart.length === 0 ||
+        pageEnd.length === 0 ||
+        (book.quantityOfPages >= pageStart && book.quantityOfPages <= pageEnd);
+
+      const isEqualGenres =
+        checkedGenres.length === 0 ||
+        checkedGenres.every((checkedGenre) =>
+          book.genres.some((genre) => genre.name === checkedGenre)
+        );
+
+      const isEqualTags =
+        checkedTags.length === 0 ||
+        checkedTags.every((checkedTag) =>
+          book.tags.some((tag) => tag.name === checkedTag)
+        );
+
+      const isBetweenDate =
+        yearStart.length === 0 ||
+        yearEnd.length === 0 ||
+        (book.yearOfWriting >= yearStart && book.yearOfWriting <= yearEnd);
+
+      return (
+        isEqualGenres &&
+        isEqualTags &&
+        isBetweenDate &&
+        isEqualPages &&
+        isEqualTitle
+      );
+    });
+  }
+
+  const filteredBooks = filterBooks(
+    books,
+    checkedGenres,
+    checkedTags,
+    yearStart,
+    yearEnd,
+    pageStart,
+    pageEnd
+  );
 
   const handleClick = () => {
     setIsActiveGenre(!isActiveGenre);
@@ -42,31 +117,43 @@ const Books = () => {
   useEffect(() => {
     async function fetchBooks() {
       const response = await axios.get(API_URL + "books/all");
-      setEditions(response.data);
+      setBooks(response.data);
     }
+
     fetchBooks();
-  });
+  }, []);
   return (
     <div>
-      <h3>All books</h3>
+      <h4>All books</h4>
+      <Form>
+        <Input
+          type="text"
+          className="input-search mx-1 my-2"
+          placeholder="Search..."
+          value={searchInput}
+          onChange={handleSearchChange}
+        />
+      </Form>
       <div className="allBooks">
         <div className="card-columns-all">
-          {editions.map((edition) => (
-            <Card key={edition.id} className="card-style my-4">
+          {filteredBooks.map((book) => (
+            <Link key={book.id} to={`/book/${book.id}`} className="card-link">
+            <Card  className="card-style my-4">
               <Card.Img
                 className="card-image"
                 variant="top"
-                src={`http://localhost:8084${edition.imageUrl}`}
+                src={`http://localhost:8084${book.editions[0].imageUrl}`}
               />
               <Card.Body className="card-body">
                 <Card.Title className="overflow-text">
-                  {edition.title}
+                  {book.title}
                 </Card.Title>
               </Card.Body>
             </Card>
+          </Link>
           ))}
         </div>
-        <div className="three-blocks py-4">
+        <div className="three-blocks py-4 my-3">
           <div
             className={`genres-block block-hidden px-3 ${
               isActiveGenre ? "active" : ""
@@ -86,7 +173,7 @@ const Books = () => {
             <TagList
               isActiveTag={isActiveTag}
               setActiveTag={setCloseTag}
-              setList={setCheckedTags}
+              setListTags={setCheckedTags}
             />
           </div>
           <div className="filter-block  px-3">
@@ -113,17 +200,17 @@ const Books = () => {
                   <Input
                     type="text"
                     className="input-left my-2"
-                    value={startPage}
-                    onChange={(e) => setStartPage(e.target.value)}
                     placeholder="From"
+                    value={pageStart}
+                    onChange={(e) => setPageStart(e.target.value)}
                   />
                   <span className="text-muted">—</span>
                   <Input
                     type="text"
                     className="input-right my-2"
-                    value={startPage}
-                    onChange={(e) => setStartPage(e.target.value)}
                     placeholder="To"
+                    value={pageEnd}
+                    onChange={(e) => setPageEnd(e.target.value)}
                   />
                 </div>
               </div>
@@ -133,16 +220,16 @@ const Books = () => {
                   <Input
                     type="text"
                     className="input-left my-2"
-                    value={startPage}
-                    onChange={(e) => setStartPage(e.target.value)}
+                    value={yearStart}
+                    onChange={(e) => setYearStart(e.target.value)}
                     placeholder="From"
                   />
                   <span className="text-muted">—</span>
                   <Input
                     type="text"
                     className="input-right my-2"
-                    value={startPage}
-                    onChange={(e) => setStartPage(e.target.value)}
+                    value={yearEnd}
+                    onChange={(e) => setYearEnd(e.target.value)}
                     placeholder="To"
                   />
                 </div>
@@ -153,16 +240,12 @@ const Books = () => {
                   <Input
                     type="text"
                     className="input-left my-2"
-                    value={startPage}
-                    onChange={(e) => setStartPage(e.target.value)}
                     placeholder="From"
                   />
                   <span className="text-muted">—</span>
                   <Input
                     type="text"
                     className="input-right my-2"
-                    value={startPage}
-                    onChange={(e) => setStartPage(e.target.value)}
                     placeholder="To"
                   />
                 </div>
@@ -170,6 +253,7 @@ const Books = () => {
               <div className="two-buttons my-3">
                 <button
                   type="submit"
+                  onClick={handleReset}
                   className="btn text-secondary btn-block filter-button btn-left"
                 >
                   Reset
