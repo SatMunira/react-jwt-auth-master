@@ -8,7 +8,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RatingModal from "./RatingModal";
 import ReviewPage from "./ReviewPage";
 import CommentForm from "./CommentForm";
-import Dropdown from 'react-bootstrap/Dropdown';
+import Dropdown from "react-bootstrap/Dropdown";
+import authHeader from "../services/auth-header";
+
 
 const API_URL = "http://localhost:8084/";
 
@@ -18,23 +20,91 @@ const BookInfo = () => {
   const [activeTab, setActiveTab] = useState("info");
   const [showRateModal, setShowRateModal] = useState(false);
   const [avgRating, setAvgRating] = useState("");
+  const [showDrop, setShowDrop] = useState(false);
   const [listTypes, setListTypes] = useState([]);
   const [selectedListType, setSelectedListType] = useState("");
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const handleShowModal = () => {
     setShowRateModal(true);
   };
 
+  const handleChangeDropdown = () => {
+    setShowDrop(!showDrop);
+  };
   const handleCloseModal = () => {
     setShowRateModal(false);
   };
 
+  const createBookHandler = async (e, type) => {
+    e.preventDefault();
+
+    await axios
+      .post(
+        API_URL + "api/booklists/add",
+        {
+          listType: type,
+          startDate: new Date(),
+          book: {
+            id: book.id,
+          },
+          user: {
+            id: user.id,
+          },
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + user.accessToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Book added to list successfully:", response.data);
+        // Reset form inputs
+      })
+      .catch((error) => {
+        console.error("Error adding book to list: ", error);
+      });
+  };
+
   useEffect(() => {
-    fetch(API_URL + `api/booklists/listtypes`)
-      .then((response) => response.json())
-      .then((data) => setListTypes(data.listTypes));
+    async function fetchLists() {
+      await axios
+        .get(`http://localhost:8084/api/booklists/listtypes`)
+        .then((response) => {
+          setListTypes(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    fetchLists();
   }, []);
 
+  useEffect(() => {
+    // Check if the user exists
+    if (user && user.id) {
+      // User exists, fetch the data
+      function fetchLists() {
+        axios
+          .get(
+            `http://localhost:8084/api/booklists/getType?userId=${user.id}&bookId=${id}`
+          )
+          .then((response) => {
+            setSelectedListType(response.data);
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      
+      // Call the fetchLists function
+      fetchLists();
+    }
+  }, [user, id]);
+  
   useEffect(() => {
     async function fetchBooks() {
       await axios
@@ -67,7 +137,9 @@ const BookInfo = () => {
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-
+  const handleListTypeSelect = (listType) => {
+    setSelectedListType(listType);
+  };
   return (
     <>
       {book ? (
@@ -92,21 +164,32 @@ const BookInfo = () => {
                     />
                   </div>
                 </div>
-                <Dropdown>
-                    <Dropdown.Toggle className="media-button btn btn-dark py-1" variant="success" id="dropdown-basic">
-                    {selectedListType ? selectedListType : 'Select List Type'}
-                    </Dropdown.Toggle>
+                <Dropdown
+                  onClick={handleChangeDropdown}
+                  className={showDrop ? "show-drop" : ""}
+                >
+                  <Dropdown.Toggle
+                    className="media-button btn btn-dark py-1"
+                    variant="success"
+                    id="dropdown-basic"
+                  >
+                    {selectedListType ? selectedListType : "Select List Type"}
+                  </Dropdown.Toggle>
 
-                    <Dropdown.Menu>
-                      <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                      <Dropdown.Item href="#/action-2">
-                        Another action
+                  <Dropdown.Menu>
+                    {listTypes.map((type) => (
+                      <Dropdown.Item
+                        key={type}
+                        onClick={(e) => {
+                          createBookHandler(e, type);
+                          setSelectedListType(type);
+                        }}
+                      >
+                        {type}
                       </Dropdown.Item>
-                      <Dropdown.Item href="#/action-3">
-                        Something else
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
               </div>
               <div className="media-content">
                 <div className="media-name section">

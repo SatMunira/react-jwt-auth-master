@@ -7,6 +7,7 @@ import Input from "react-validation/build/input";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import ResetPasswordState from "./reset-pass-status";
+import axiosInstance from './axiosInstance';
 
 const API_URL = "http://localhost:8084/forgot_password";
 

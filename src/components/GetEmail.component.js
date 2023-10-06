@@ -5,6 +5,7 @@ import CheckButton from "react-validation/build/button";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
 import "./css/LoginModal.css";
+import axiosInstance from './axiosInstance';
 
 import { Button } from "react-bootstrap";
 

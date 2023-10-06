@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 import Register from "./register.component";
+import axiosInstance from './axiosInstance';
 import { useEffect } from "react";
 const required = (value) => {
   if (!value) {

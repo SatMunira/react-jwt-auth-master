@@ -3,6 +3,7 @@ import React from "react";
 import { Modal } from "react-bootstrap";
 import "./css/LoginModal.css";
 import { Button } from "react-bootstrap";
+import axiosInstance from './axiosInstance';
 
 export default function ResetPasswordState({ message, setMessage }) {
   return (

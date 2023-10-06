@@ -19,8 +19,9 @@ import OAuth2RedirectHandler from "./user/oauth2/OAuth2RedirectHandler";
 import ResetPasswordForm from "./components/reset-password-form";
 import NewBookForm from "./components/NewBookForm";
 
-import Books from "./components/Books"
+import Books from "./components/Books";
 import BookInfo from "./components/BookInfo";
+import ErrorPage from "./components/ErrorPage";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -74,7 +75,7 @@ function App() {
         <div className="container-fluid">
           <div className="navbar-nav mr-auto">
             <Link to={"/"} className="navbar-brand">
-              bezKoder
+              Kafka
             </Link>
             <li className="nav-item">
               <Link to={"/home"} className="nav-link">
@@ -106,10 +107,10 @@ function App() {
               </li>
             )}
             <li className="nav-item">
-                <Link to={"/books"} className="nav-link">
-                  Books
-                </Link>
-              </li>
+              <Link to={"/books"} className="nav-link">
+                Books
+              </Link>
+            </li>
           </div>
 
           {currentUser ? (
@@ -155,17 +156,26 @@ function App() {
       </nav>
       <div className="container-home mt-3">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/user" element={<BoardUser />} />
-          <Route path="/mod" element={<BoardModerator />} />
-          <Route path="/admin" element={<BoardAdmin />} />
-          <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
-          <Route path="/books/createBook" element={<NewBookForm/>}/>
-          <Route path="/reset_password_form" element={<ResetPasswordForm />} />
-          <Route path="/books" element={<Books/>}/>
-          <Route path="/book/:id" element={<BookInfo/>}/>
+          
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/user" element={<BoardUser />} />
+            <Route path="/mod" element={<BoardModerator />} />
+            <Route path="/admin" element={<BoardAdmin />} />
+            <Route
+              path="/oauth2/redirect"
+              element={<OAuth2RedirectHandler />}
+            />
+            <Route path="/books/createBook" element={<NewBookForm />} />
+            <Route
+              path="/reset_password_form"
+              element={<ResetPasswordForm />}
+            />
+            <Route path="/books" element={<Books />} />
+            <Route path="/book/:id" element={<BookInfo />} />
+            <Route path="*" element={<ErrorPage />} />        
+          
         </Routes>
       </div>
 

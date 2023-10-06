@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 import { GOOGLE_AUTH_URL } from "../index.js";
+import axiosInstance from './axiosInstance';
 
 import AuthService from "../services/auth.service";
 import Login from "./login.component";

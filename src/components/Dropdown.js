@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import "./css/Dropdown.css";
+import axiosInstance from './axiosInstance';
 
 const Icon = () => {
   return (
@@ -146,7 +147,7 @@ const DropdownAuthors = ({
         </div>
       </div>
       {showMenu && (
-        <div className="dropdown-menu">
+        <div className="dropdown-menu dropdown-new-menu">
           {isSearchable && (
             <div className="search-box">
               <input onChange={onSearch} value={searchValue} ref={searchRef} />

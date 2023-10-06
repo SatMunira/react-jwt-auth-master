@@ -3,6 +3,10 @@ import React, { Component } from "react";
 import UserService from "../services/user.service";
 import NewBookList from "./NewBookList";
 import "./css/Home.css"
+import HeroSection from "./HeroSection";
+import AboutSection from "./AboutSection";
+import Footer from "./Footer";
+import axiosInstance from './axiosInstance';
 
 export default class Home extends Component {
   constructor(props) {
@@ -36,6 +40,9 @@ export default class Home extends Component {
       <div className="container-home">
         <header className="jumbotron">
           <NewBookList/>
+          <HeroSection/>
+          <AboutSection/>
+          <Footer/>
         </header>
       </div>
     );

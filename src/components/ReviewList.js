@@ -3,6 +3,7 @@ import axios from "axios";
 import { Image } from "react-bootstrap";
 import "./css/Review.css";
 import StarRating from "./StarRating";
+import axiosInstance from './axiosInstance';
 
 const API_URL = "http://localhost:8084/";
 

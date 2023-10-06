@@ -15,7 +15,7 @@
 }
 .dropdown-menu {
   position: absolute;
-  display: block;
+
   transform: translateY(4px);
   width: 100%;
   border: 1px solid #ccc;
@@ -24,6 +24,9 @@
   max-height: 150px;
   background-color: #fff;
   padding: 0;
+}
+.dropdown-new-menu {
+  display: block;
 }
 .dropdown-item {
   padding: 5px;
@@ -34,7 +37,6 @@
   background-color: #ffffff;
 }
 .dropdown-menu::-webkit-scrollbar-track {
-  
   border-radius: 6px;
   background-color: #fff;
 }

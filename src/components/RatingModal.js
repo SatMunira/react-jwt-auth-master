@@ -3,6 +3,7 @@ import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import StarRating from "./StarRating";
 import authHeader from "../services/auth-header";
+import axiosInstance from './axiosInstance';
 
 const API_URL = "http://localhost:8084/";
 

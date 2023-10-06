@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import "./css/ImageUpload.css";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axiosInstance from './axiosInstance';
 
 const ImageUploader = (props) => {
   const [image, setImage] = useState(null);
