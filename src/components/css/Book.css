@@ -8,7 +8,7 @@
   height: auto;
 }
 .card-style {
-  margin: 0;
+  margin: 0; 
   padding: 0;
   border: none; /* Убираем границу */
   box-shadow: none; /* Убираем тень */
